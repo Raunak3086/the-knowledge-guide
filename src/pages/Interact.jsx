@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import DocumentSideMenu from '../components/DocumentSideMenu';
 import DocumentUploadModal from '../components/DocumentUploadModal';
 import UploadForm from '../components/UploadForm';
@@ -9,6 +9,8 @@ import axios from 'axios';
 
 function Interact() {
   const location = useLocation();
+  const navigate = useNavigate();
+  
   const [userId, setUserId] = useState(null);
   const [docs, setDocs] = useState([]);
   const [isLoadingDocs, setIsLoadingDocs] = useState(true);
@@ -27,6 +29,31 @@ function Interact() {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  // COMPLETE LOGOUT FUNCTION - Redirects to LOGIN
+  const handleLogout = () => {
+    // Clear authentication storage
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userToken');
+    sessionStorage.clear();
+    
+    // Reset all Interact state
+    setUserId(null);
+    setDocs([]);
+    setDocId(null);
+    setDocName('');
+    setDocumentContent('');
+    setSummary('');
+    setAnswer('');
+    setQuestion('');
+    setIsModalOpen(false);
+    
+    // Navigate to LOGIN page (clears browser history)
+    navigate('/login', { 
+      replace: true,
+      state: { from: location.pathname }
+    });
+  };
 
   useEffect(() => {
     if (location.state?.userId) {
@@ -61,7 +88,7 @@ function Interact() {
     try {
       const response = await axios.get(`http://localhost:5000/api/file/${id}`);
       setDocumentContent(response.data.text);
-    } catch (error)  {
+    } catch (error) {
       setDocumentContentError(`Failed to load content for "${name}". Please try again.`);
     } finally {
       setIsLoadingDocumentContent(false);
@@ -143,16 +170,16 @@ function Interact() {
 
   if (isLoadingDocs) {
     return (
-      <div className="interact-page">
+      <div className="interact-page serpentique min-h-screen">
         <DocumentSideMenu documents={[]} isLoadingDocs={true} />
         <main className="main-content">
-          <div className="main-content__header">
-            <h1 className="main-content__title main-content__title--skeleton"><SkeletonLoader /></h1>
+          <div className="main-content__header twin-serpent-glow p-6">
+            <h1 className="main-content__title main-content__title--skeleton serpentique"><SkeletonLoader /></h1>
           </div>
-          <div className="document-view document-view--skeleton"><SkeletonLoader /></div>
+          <div className="document-view document-view--skeleton twin-serpent-glow p-8 rounded-2xl"><SkeletonLoader /></div>
           <div className="grid-layout">
-            <div className="grid-item grid-item--skeleton"><SkeletonLoader /></div>
-            <div className="grid-item grid-item--skeleton"><SkeletonLoader /></div>
+            <div className="grid-item grid-item--skeleton twin-serpent-glow p-6 rounded-xl"><SkeletonLoader /></div>
+            <div className="grid-item grid-item--skeleton twin-serpent-glow p-6 rounded-xl"><SkeletonLoader /></div>
           </div>
         </main>
       </div>
@@ -161,10 +188,10 @@ function Interact() {
 
   if (docsError) {
     return (
-      <div className="interact-page">
+      <div className="interact-page serpentique min-h-screen">
         <DocumentSideMenu documents={[]} docsError={docsError} />
         <main className="main-content main-content--centered">
-          <p className="error-message">{docsError}</p>
+          <p className="error-message serpentique text-emerald-glow p-8 twin-serpent-glow rounded-2xl max-w-2xl mx-auto text-center">{docsError}</p>
         </main>
       </div>
     );
@@ -173,12 +200,13 @@ function Interact() {
   if (docs.length === 0) {
     return (
       <>
-        <div className="interact-page">
+        <div className="interact-page serpentique min-h-screen">
           <DocumentSideMenu documents={docs} onAddNewDocument={openModal} />
           <main className="main-content main-content--centered">
-            <div className="empty-state">
-              <h1 className="empty-state__title">No Documents</h1>
-              <p className="empty-state__subtitle">Upload a document to get started.</p>
+            <div className="empty-state twin-serpent-glow p-12 rounded-2xl text-center max-w-2xl mx-auto bg-gradient-to-br from-serpent-primary to-labyrinth-dark">
+              <h1 className="empty-state__title serpentique text-3xl mb-4 text-emerald-glow">🐍 No Chronicles</h1>
+              <p className="empty-state__subtitle serpentique text-lg mb-8 opacity-90">Upload a serpent scroll to begin the Twin Serpents ritual.</p>
+              <button onClick={openModal} className="serpent-btn px-12 py-4 text-lg font-bold">⚔️ Ingest Chronicle</button>
             </div>
           </main>
         </div>
@@ -190,12 +218,12 @@ function Interact() {
   if (!docId) {
     return (
       <>
-        <div className="interact-page">
+        <div className="interact-page serpentique min-h-screen">
           <DocumentSideMenu documents={docs} onAddNewDocument={openModal} onDocumentSelect={handleDocumentSelect} />
           <main className="main-content main-content--centered">
-            <div className="empty-state">
-              <h1 className="empty-state__title">Select a Document</h1>
-              <p className="empty-state__subtitle">Choose a document from the sidebar to begin.</p>
+            <div className="empty-state twin-serpent-glow p-12 rounded-2xl text-center max-w-2xl mx-auto bg-gradient-to-br from-serpent-primary to-labyrinth-dark">
+              <h1 className="empty-state__title serpentique text-3xl mb-4 text-emerald-glow">📜 Select Chronicle</h1>
+              <p className="empty-state__subtitle serpentique text-lg mb-8 opacity-90">Choose a document from the sidebar to query the Prophecy.</p>
             </div>
           </main>
         </div>
@@ -206,7 +234,7 @@ function Interact() {
 
   return (
     <>
-      <div className="interact-page">
+      <div className="interact-page serpentique min-h-screen">
         <DocumentSideMenu
           documents={docs}
           activeDocId={docId}
@@ -216,54 +244,90 @@ function Interact() {
           onDocumentRename={handleRenameDocument}
         />
         <main className="main-content">
-          <div className="main-content__header">
-            <h1 className="main-content__title">{docName}</h1>
+          {/* HEADER WITH LOGIN REDIRECT LOGOUT */}
+          <div className="main-content__header twin-serpent-glow p-6 rounded-t-2xl bg-gradient-to-r from-serpent-primary to-labyrinth-dark border-b border-emerald-glow">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-4">
+              <div className="flex-1">
+                <h1 className="main-content__title serpentique text-2xl lg:text-3xl font-bold text-emerald-glow">
+                  📜 {docName}
+                </h1>
+                
+              </div>
+              <button 
+  onClick={handleLogout}
+  className="logout-btn serpentique shadow-lg hover:shadow-twin-serpent"
+  title="Return to Serpent's Lair"
+  disabled={isLoadingDocs}
+>
+  <span className="door-icon">🚪</span>
+  <span className="hidden sm:inline">Log out</span>
+  <span className="sm:hidden"></span>
+</button>
+
+            </div>
+            
           </div>
 
-          <div className="document-view">
+          <div className="document-view twin-serpent-glow p-8 rounded-b-2xl bg-gradient-to-b from-labyrinth-dark to-serpent-primary">
             {isLoadingDocumentContent ? (
               <SkeletonLoader />
             ) : documentContentError ? (
-              <p className="error-message">{documentContentError}</p>
+              <div className="error-message serpentique text-red-400 p-8 bg-red-500/10 rounded-xl border-2 border-red-500/30">
+                {documentContentError}
+              </div>
             ) : (
-              <p className="document-view__content">{documentContent}</p>
+              <div className="document-view__content serpentique leading-relaxed max-h-[400px] overflow-y-auto prose prose-invert max-w-none">
+                {documentContent}
+              </div>
             )}
           </div>
 
-          <div className="grid-layout">
-            <div className="grid-item">
-              <h2 className="grid-item__title">Summary</h2>
-              <button className="grid-item__button" onClick={handleSummarize} disabled={isLoadingSummarize || isLoadingDocumentContent}>
-                {isLoadingSummarize ? 'Summarizing...' : 'Summarize'}
+          <div className="grid-layout grid-cols-1 lg:grid-cols-2 gap-6 p-6">
+            <div className="grid-item twin-serpent-glow p-8 rounded-2xl bg-gradient-to-br from-serpent-primary to-labyrinth-dark">
+              <h2 className="grid-item__title serpentique text-2xl mb-6 text-emerald-glow flex items-center">
+                🔮 Prophecy Summary
+              </h2>
+              <button 
+                className="serpent-btn w-full mb-6 px-8 py-3 text-lg" 
+                onClick={handleSummarize} 
+                disabled={isLoadingSummarize || isLoadingDocumentContent}
+              >
+                {isLoadingSummarize ? '🔮 Resonating...' : 'Reveal Summary'}
               </button>
               <textarea
-                className="grid-item__textarea"
+                className="grid-item__textarea serpent-input w-full h-48 p-4 rounded-xl resize-vertical"
                 readOnly
                 value={summary}
-                placeholder="Summary will appear here..."
+                placeholder="Summary of the chronicle will appear here..."
               />
             </div>
 
-            <div className="grid-item">
-              <h2 className="grid-item__title">Ask Query</h2>
-              <div className="query-box">
+            <div className="grid-item twin-serpent-glow p-8 rounded-2xl bg-gradient-to-br from-serpent-primary to-labyrinth-dark">
+              <h2 className="grid-item__title serpentique text-2xl mb-6 text-emerald-glow flex items-center">
+                🐍 Twin Serpent Query
+              </h2>
+              <div className="query-box mb-6 p-6 bg-grey-cloak/30 rounded-2xl border-2 border-emerald-glow/50">
                 <input
                   type="text"
-                  className="query-box__input"
+                  className="query-box__input serpent-input w-full p-4 rounded-xl mb-4 text-lg"
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
-                  placeholder="Ask a question..."
+                  placeholder="What occurred at Cokeworth on November 1st, 1978?..."
                   disabled={isLoadingQuery || isLoadingDocumentContent}
                 />
-                <button className="query-box__button" onClick={handleQuery} disabled={!question || isLoadingQuery || isLoadingDocumentContent}>
-                  {isLoadingQuery ? 'Asking...' : 'Ask'}
+                <button 
+                  className="serpent-btn w-full px-8 py-3 text-lg" 
+                  onClick={handleQuery} 
+                  disabled={!question.trim() || isLoadingQuery || isLoadingDocumentContent}
+                >
+                  {isLoadingQuery ? '🔮 Divining...' : '🐍 Ask the Serpents'}
                 </button>
               </div>
               <textarea
-                className="grid-item__textarea"
+                className="grid-item__textarea serpent-input w-full h-48 p-4 rounded-xl resize-vertical"
                 readOnly
                 value={answer}
-                placeholder="Answer will appear here..."
+                placeholder="Revelation from the Twin Serpents will appear here..."
               />
             </div>
           </div>
