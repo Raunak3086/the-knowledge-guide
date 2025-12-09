@@ -1,0 +1,81 @@
+/* index.css */
+
+@import url('./theme.css');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--color-black);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+#root::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(45deg, rgba(var(--color-emerald-rgb), 0.1) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(var(--color-emerald-rgb), 0.1) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(var(--color-cyan-rgb), 0.1) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(var(--color-cyan-rgb), 0.1) 75%);
+  background-size: 60px 60px;
+  animation: bg-grid 30s linear infinite;
+  will-change: background-position;
+  z-index: -2;
+}
+
+#root::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(var(--color-pink-rgb), 0.2) 0%, transparent 25%),
+    radial-gradient(circle at 80% 90%, rgba(var(--color-cyan-rgb), 0.2) 0%, transparent 25%);
+  animation: bg-aurora 40s ease-in-out infinite;
+  will-change: background-position;
+  z-index: -1;
+}
+
+@keyframes bg-grid {
+  0% { background-position: 0 0; }
+  100% { background-position: 120px 60px; }
+}
+
+@keyframes bg-aurora {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

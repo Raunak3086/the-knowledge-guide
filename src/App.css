@@ -1,0 +1,15 @@
+/* App.css */
+
+#root {
+  width: 100vw;
+  min-height: 100vh;
+  /* Ensure #root takes up full width and height without centering */
+  margin: 0;
+  padding: 0;
+  max-width: none;
+}
+
+/* Hide unused default Vite styles */
+.logo, .logo:hover, .logo.react:hover, @keyframes logo-spin, .card, .read-the-docs {
+  display: none;
+}

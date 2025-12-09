@@ -1,0 +1,42 @@
+/* DocumentUploadModal.css */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(var(--color-black-rgb), 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+
+.modal-content {
+  background: rgba(var(--color-black-rgb), 0.5);
+  border: 1px solid rgba(var(--color-pink-rgb), 0.3);
+  border-radius: var(--spacing-lg);
+  padding: var(--spacing-xl);
+  position: relative;
+  box-shadow: 0 0 40px rgba(var(--color-pink-rgb), 0.3);
+  width: 90%;
+  max-width: 600px;
+}
+
+.modal-close-button {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  background: transparent;
+  border: 1px solid var(--color-pink);
+  color: var(--color-pink);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.button-group {
+  display: flex;
+  gap: var(--spacing-md); /* This will add a gap between buttons */
+  margin-top: var(--spacing-lg);
+}

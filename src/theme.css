@@ -1,0 +1,38 @@
+/* theme.css */
+
+:root {
+  /* Color Palette */
+  --color-black: #05050a;
+  --color-emerald: #10b981;
+  --color-cyan: #00ffcc;
+  --color-pink: #ff1493;
+  --color-gold: #ffed00;
+
+  /* RGB Fallbacks */
+  --color-black-rgb: 5, 5, 10;
+  --color-emerald-rgb: 16, 185, 129;
+  --color-cyan-rgb: 0, 255, 204;
+  --color-pink-rgb: 255, 20, 147;
+  --color-gold-rgb: 255, 237, 0;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 64px;
+
+  /* Timing */
+  --timing-short: 300ms;
+  --timing-medium: 400ms;
+  --timing-long: 600ms;
+
+  /* Cubic Bezier Curves */
+  --ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-out-back: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+  /* Font */
+  --font-family: 'Orbitron', sans-serif;
+}
